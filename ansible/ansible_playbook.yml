@@ -1,0 +1,15 @@
+---
+- name: Ensure Apache is installed and running
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Ping the host to check connectivity
+      ping:
+
+#- name: Build and deploy a simple web application on target machines
+#  hosts: nodes 
+#  vars:
+#    ansible_python_interpreter: /usr/bin/python3
+#  tasks:
+#    - name: Installing docker on the two-target vagrant machine using ansible
