@@ -3,9 +3,27 @@
   hosts: myservers
   become: yes  # Use sudo
   tasks:
-    - name: Ensure the latest version of Docker is installed
+    - name: Remove podman-docker if installed
       yum:
-        name: docker
+        name: podman-docker
+        state: absent
+      ignore_errors: yes  # Continue if podman-docker is not found
+
+    - name: Install required packages
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: present
+
+    - name: Set up the Docker repository
+      command: >
+        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install Docker
+      yum:
+        name: docker-ce
         state: present
 
     - name: Start Docker service
@@ -13,3 +31,31 @@
         name: docker
         state: started
         enabled: yes
+
+    - name: Check Docker version
+      command: docker --version
+      register: docker_version
+
+    - name: Display Docker version
+      debug:
+        msg: "Docker version: {{ docker_version.stdout }}"
+
+    - name: Check Docker service status
+      systemd:
+        name: docker
+        state: started
+      register: docker_status
+
+    - name: Display Docker service status
+      debug:
+        msg: "Docker service status: {{ docker_status.status }}"
+
+    - name: Run hello-world container
+      command: docker run hello-world
+      register: hello_world_output
+      ignore_errors: yes  # Ignore if the container fails to run
+
+    - name: Display hello-world output
+      debug:
+        msg: "{{ hello_world_output.stdout }}"
+      when: hello_world_output.rc == 0
