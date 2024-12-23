@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker image from Dockerhub
+      docker_image:
+        name: your_docker_image_name  # replace with your desired image
+        tag: latest
+
+    - name: Run Docker container
+      docker_container:
+        name: your_container_name  # replace with your desired container name
+        image: your_docker_image_name  # replace with your desired image
+        state: started
+        restart_policy: always
