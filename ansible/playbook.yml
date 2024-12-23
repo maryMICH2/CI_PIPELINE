@@ -7,7 +7,7 @@
       yum:
         name: podman-docker
         state: absent
-      ignore_errors: yes  # Continue if podman-docker is not found
+      ignore_errors: yes
 
     - name: Install required packages
       yum:
@@ -18,13 +18,16 @@
         state: present
 
     - name: Set up the Docker repository
-      command: >
-        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
     - name: Install Docker
       yum:
         name: docker-ce
         state: present
+
+    - name: Add user to docker group
+      command: usermod -aG docker {{ ansible_user }}
+      ignore_errors: yes
 
     - name: Start Docker service
       service:
@@ -32,33 +35,22 @@
         state: started
         enabled: yes
 
-    - name: Check Docker version
-      command: docker --version
-      register: docker_version
-
-    - name: Display Docker version
-      debug:
-        msg: "Docker version: {{ docker_version.stdout }}"
-
-    - name: Check Docker service status
-      systemd:
+    - name: Restart Docker service
+      service:
         name: docker
-        state: started
-      register: docker_status
-
-    - name: Display Docker service status
-      debug:
-        msg: "Docker service status: {{ docker_status.status }}"
+        state: restarted
 
     - name: Pull Docker image from Docker Hub
       docker_image:
         name: marriy/first_repo
-        tag: "{{ lookup('env', 'BUILD_NUMBER') }}"  # Pull using the environment variable
-        source: pull  # Specify the source
+        tag: latest
+        source: pull
 
     - name: Run Docker container from image
       docker_container:
-        name: first_repo_container  # Replace with a desired container name
-        image: "marriy/first_repo:{{ lookup('env', 'BUILD_NUMBER') }}"
+        name: first_repo_container
+        image: "marriy/first_repo:latest"
         state: started
-        restart_policy: always  # Optional: Set the restart policy
+        restart_policy: always
+        published_ports:
+          - "5000:5000"
