@@ -1,5 +1,5 @@
 ---
-- name: Install Docker and run container on CentOS 9 machines
+- name: Install Docker and run container on CentOS  machines
   hosts: myservers
   become: true  # Use sudo to install packages
   tasks:
@@ -25,13 +25,13 @@
         state: started
         enabled: true
 
-    - name: Pull Docker image from Docker Hub
-      docker_image:
-        name: marriy/first_repo  # Replace with the actual image name
-        tag: latest  # You can specify another tag if needed
+#    - name: Pull Docker image from Docker Hub
+#      docker_image:
+#        name: marriy/first_repo  # Replace with your actual image name
+#        tag: "{{ env.BUILD_NUMBER }}"  # This will use the build number as the tag
 
-    - name: Run Docker container
-      docker_container:
-        name: your_container_name  # Replace with your desired container name
-        image: marriy/first_repo:latest  # Use the same image name as above
-        state: started
+#    - name: Run Docker container
+#      docker_container:
+#        name: my_container  # Replace with your desired container name
+#        image: marriy/first_repo:{{ env.BUILD_NUMBER }}  # Use the same image name as above
+#        state: started
