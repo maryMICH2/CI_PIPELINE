@@ -27,11 +27,11 @@
 
     - name: Pull Docker image from Docker Hub
       docker_image:
-        name: your_docker_image  # Replace with the actual image name
+        name: marriy/first_repo  # Replace with the actual image name
         tag: latest  # You can specify another tag if needed
 
     - name: Run Docker container
       docker_container:
         name: your_container_name  # Replace with your desired container name
-        image: your_docker_image:latest  # Use the same image name as above
+        image: marriy/first_repo:latest  # Use the same image name as above
         state: started
