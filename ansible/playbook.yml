@@ -1,5 +1,9 @@
 ---
+<<<<<<< HEAD
 - name: Install Docker and run container on CentOS  machines
+=======
+- name: Install Docker and run container on CentOS machines
+>>>>>>> origin/main
   hosts: myservers
   become: true  # Use sudo to install packages
   tasks:
