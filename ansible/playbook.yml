@@ -1,5 +1,5 @@
 ---
-- name: Install Docker and run container on CentOS 9 machines
+- name: Install Docker and run container on CentOS machines
   hosts: myservers
   become: true  # Use sudo to install packages
   tasks:
