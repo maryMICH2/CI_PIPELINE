@@ -1,27 +1,37 @@
 ---
-- hosts: all
-  become: yes
+- name: Install Docker and run container on CentOS 9 machines
+  hosts: myservers
+  become: true  # Use sudo to install packages
   tasks:
-    - name: Install Docker
-      apt:
-        name: docker.io
+    - name: Install required packages
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
         state: present
-        update_cache: yes
 
-    - name: Start and enable Docker service
+    - name: Add Docker repository
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install Docker
+      yum:
+        name: docker-ce
+        state: present
+
+    - name: Start Docker service
       service:
         name: docker
         state: started
-        enabled: yes
+        enabled: true
 
-    - name: Pull Docker image from Dockerhub
+    - name: Pull Docker image from Docker Hub
       docker_image:
-        name: your_docker_image_name  # replace with your desired image
-        tag: latest
+        name: your_docker_image  # Replace with the actual image name
+        tag: latest  # You can specify another tag if needed
 
     - name: Run Docker container
       docker_container:
-        name: your_container_name  # replace with your desired container name
-        image: your_docker_image_name  # replace with your desired image
+        name: your_container_name  # Replace with your desired container name
+        image: your_docker_image:latest  # Use the same image name as above
         state: started
-        restart_policy: always
