@@ -50,12 +50,15 @@
       debug:
         msg: "Docker service status: {{ docker_status.status }}"
 
-    - name: Run hello-world container
-      command: docker run hello-world
-      register: hello_world_output
-      ignore_errors: yes  # Ignore if the container fails to run
+    - name: Pull Docker image from Docker Hub
+      docker_image:
+        name: marriy/first_repo
+        tag: "{{ lookup('env', 'BUILD_NUMBER') }}"  # Pull using the environment variable
+        source: pull  # Specify the source
 
-    - name: Display hello-world output
-      debug:
-        msg: "{{ hello_world_output.stdout }}"
-      when: hello_world_output.rc == 0
+    - name: Run Docker container from image
+      docker_container:
+        name: first_repo_container  # Replace with a desired container name
+        image: "marriy/first_repo:{{ lookup('env', 'BUILD_NUMBER') }}"
+        state: started
+        restart_policy: always  # Optional: Set the restart policy
