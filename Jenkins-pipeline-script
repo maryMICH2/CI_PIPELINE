@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo 'Checking out the code..'
+                git branch: 'main', credentialsId: 'my git Credential', url: 'https://github.com/maryMICH2/CI_PIPELINE.git'
+                
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building the image.. '
+                sh "docker build -t marriy/first_repo:latest ."
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'pushing the image.. '
+                withCredentials([usernamePassword(credentialsId: 'dockerhup_credential', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    sh "docker login -u $username -p $password"
+                    sh "docker push marriy/first_repo:latest"
+                }
+            }
+        }
+        
+        stage('run ansible_playbook') {
+            steps {
+                echo 'Running the playbook....'
+                dir('ansible') {
+                    sh "ansible-playbook -i /etc/ansible/hosts playbook.yml"
+                    
+                }
+            
+                
+            
+            }
+            
+        }
+        
+    }
+}
