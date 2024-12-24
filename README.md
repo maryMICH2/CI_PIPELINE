@@ -32,7 +32,7 @@
     1. Specify the command to run the app `CMD ["python", "app.py"]`
     1. Build the Docker image `docker build -t <image_name> <path_to_dockerfile> `  
 
-    1. Run the Docker container `docker run -d -p 5000:5000 <image_name>  ` ![My local image](images/my_image.jpg)
+    1. Run the Docker container `docker run -d -p 5000:5000 <image_name>  ` ![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/after%20adding%20the%20api%20key%20to%20the%20app.py%20code.PNG?raw=true)
     ![My local image](images/my_image.jpg)
 
 
