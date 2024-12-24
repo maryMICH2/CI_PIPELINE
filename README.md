@@ -47,4 +47,133 @@
 * Start the machines `vagrant up`.
 ---
 #### 4. Set up a Jenkins pipeline.
+* Pull code from a Git repository.
+```
+stage('Checkout Code') {
+            steps {
+                echo 'Checking out the code..'
+                git branch: 'main', credentialsId: 'my git Credential', url: 'https://github.com/maryMICH2/CI_PIPELINE.git'
+                
+            }
+        }
+``` 
+* Build a Docker image.
+```
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building the image.. '
+                sh "docker build -t marriy/first_repo:latest ."
+            }
+        }
+```
+* Push the image to Docker Hub.
+```
+stage('Push to Docker Hub') {
+            steps {
+                echo 'pushing the image.. '
+                withCredentials([usernamePassword(credentialsId: 'dockerhup_credential', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    sh "docker login -u $username -p $password"
+                    sh "docker push marriy/first_repo:latest"
+                }
+            }
+}
+```
+---
+* Run ansible playbook that do the following 
+
+1. Installing docker on the two-target vagrant machine using ansible.
+
+```
+---
+- name: Install Docker on CentOS VMs
+  hosts: myservers
+  become: yes  # Use sudo
+  tasks:
+    - name: Remove podman-docker if installed
+      yum:
+        name: podman-docker
+        state: absent
+      ignore_errors: yes
+
+    - name: Install required packages
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: present
+
+    - name: Set up the Docker repository
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install Docker
+      yum:
+        name: docker-ce
+        state: present
+
+    - name: Add user to docker group
+      command: usermod -aG docker {{ ansible_user }}
+      ignore_errors: yes
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Restart Docker service
+      service:
+        name: docker
+        state: restarted
+```
+2. Pull the docker image from Dockerhub on the two target machines.
+```
+- name: Pull Docker image from Docker Hub
+      docker_image:
+        name: marriy/first_repo
+        tag: latest
+        source: pull
+```
+3. Run docker container from image on the two machines.
+```
+- name: Run Docker container from image
+      docker_container:
+        name: first_repo_container
+        image: "marriy/first_repo:latest"
+        state: started
+        restart_policy: always
+        published_ports:
+          - "5000:5000"
+```
+---
+<!-- screenshots-->
+* ### Ansible cofiguration:
+---
+1. ansible playbook installing docker
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/ansible%20playbook%20installing%20docker.PNG?raw=true)
+
+2. docker versions on 2 machines
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/docker%20versions%20on%202%20machines.PNG?raw=true)
+
+3. pull the images and run containers
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/pull%20the%20images%20and%20run%20containers.PNG?raw=true)
+
+---
+* ### Jenkins pipeline:
+---
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/my%20pipeline.PNG?raw=true)
+
+---
+
+* ### Final results:
+---
+1. the application from m01
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/data%20from%20m01.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/charts%20from%20m01.PNG?raw=true)
+
+2. the application from m02
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/data%20from%20m02.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/charts%20from%20m02.PNG?raw=true)
+
+---
 
