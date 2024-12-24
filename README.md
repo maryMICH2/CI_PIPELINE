@@ -32,8 +32,8 @@
     1. Specify the command to run the app `CMD ["python", "app.py"]`
     1. Build the Docker image `docker build -t <image_name> <path_to_dockerfile> `  
 
-    1. Run the Docker container `docker run -d -p 5000:5000 <image_name>  ` ![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/after%20adding%20the%20api%20key%20to%20the%20app.py%20code.PNG?raw=true)
-    ![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/after%20adding%20the%20static%20folder%20with%20a%20plot.png%20file.PNG?raw=true)
+    1. Run the Docker container `docker run -d -p 5000:5000 <image_name>  ` ![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/after%20adding%20the%20api%20key%20to%20the%20app.py%20code.PNG?raw=true)
+    ![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/after%20adding%20the%20static%20folder%20with%20a%20plot.png%20file.PNG?raw=true)
 
 
 
@@ -150,30 +150,30 @@ stage('Push to Docker Hub') {
 * ### Ansible cofiguration:
 ---
 1. ansible playbook installing docker
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/ansible%20playbook%20installing%20docker.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/ansible%20playbook%20installing%20docker.PNG?raw=true)
 
 2. docker versions on 2 machines
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/docker%20versions%20on%202%20machines.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/docker%20versions%20on%202%20machines.PNG?raw=true)
 
 3. pull the images and run containers
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/pull%20the%20images%20and%20run%20containers.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/pull%20the%20images%20and%20run%20containers.PNG?raw=true)
 
 ---
 * ### Jenkins pipeline:
 ---
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/my%20pipeline.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/my%20pipeline.PNG?raw=true)
 
 ---
 
 * ### Final results:
 ---
 1. the application from m01
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/data%20from%20m01.PNG?raw=true)
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/charts%20from%20m01.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/data%20from%20m01.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/charts%20from%20m01.PNG?raw=true)
 
 2. the application from m02
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/data%20from%20m02.PNG?raw=true)
-![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/New%20folder/charts%20from%20m02.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/data%20from%20m02.PNG?raw=true)
+![My local image](https://github.com/maryMICH2/CI_PIPELINE/blob/main/screenshots/charts%20from%20m02.PNG?raw=true)
 
 ---
 
